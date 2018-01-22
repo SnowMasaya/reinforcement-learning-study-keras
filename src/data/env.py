@@ -14,6 +14,12 @@ class Env(object):
             data = pickle.load(f)
         self.fx_time_data_buy = data['highAsk']
         self.fx_time_data_sell = data['highBid']
+        self.closeAsk_data = data['closeAsk']
+        self.closeBid_data = data['closeBid']
+        self.lowAsk_data = data['lowAsk']
+        self.lowBid_data = data['lowBid']
+        self.openAsk_data = data['openAsk']
+        self.openBid_data = data['openBid']
         self.state = 0
 
     def __sell(self, mount: int=0):

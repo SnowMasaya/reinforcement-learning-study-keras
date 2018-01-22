@@ -12,9 +12,9 @@ class Agent(object):
         self.input_shape = input_data_shape
         self.num_actions = actions
         model = Sequential()
-        model.add(Dense(12, activation='relu', input_shape=input_data_shape))
-        model.add(Dense(12, activation='relu'))
-        model.add(Dense(actions, activation='softmax'))
+        model.add(Dense(10, activation='relu', input_shape=input_data_shape))
+        model.add(Dense(20, activation='relu'))
+        model.add(Dense(actions, activation='linear'))
         self.model = model
 
     def evaluate(self, state, model=None):
