@@ -29,3 +29,13 @@ class Agent(object):
             q = self.evaluate(state)
             a = np.argmax(q)
         return a
+
+    def get_action(self, state, epsilon, targetQN):
+
+        if epsilon <= np.random.uniform(0, 1):
+            retTargetQs = targetQN.model.predict(state)[0]
+            action = np.argmax(retTargetQs)
+        else:
+            action = np.random.choice([0, 1])
+
+        return action

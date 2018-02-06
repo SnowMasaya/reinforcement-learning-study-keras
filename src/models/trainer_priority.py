@@ -1,13 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import
 from __future__ import unicode_literals
-from keras.optimizers import Adam
-from keras.models import clone_model
 import os
 from keras.callbacks import TensorBoard
 import numpy as np
 import tensorflow as tf
-from collections import deque
 from models.prioritize_experience_network import QNetWork
 from models.memory import Memory
 from models.memory import MemoryTDerror
@@ -15,7 +12,7 @@ from models.memory import MemoryTDerror
 
 class Trainer_priority(object):
 
-    def __init__(self, env, agent, mount_agent, optimizer=Adam(), model_dir="", data_end_index: int=98):
+    def __init__(self, env, agent, mount_agent, model_dir="", data_end_index: int=98):
         self.env = env
         self.agent = agent
         self.mount_agent = mount_agent
@@ -185,8 +182,10 @@ class Trainer_priority(object):
                 epsilon -= (initial_epsilon - final_epsilon) / epochs
 
             print(fmt.format(e + 1, epochs, loss, score, epsilon, is_training))
-            print("balance {}, stock_balance {} total_balance {}".
-                  format(self.env.balance, self.env.stock_balance, self.env.balance + self.env.stock_balance))
+            stock_value = self.env.fx_time_data_sell[self.env.state] * self.env.stock_balance
+            print("balance {}, stock_value {} total_balance {}".
+                  format(self.env.balance, stock_value,
+                         self.env.balance + stock_value))
 
             if e % 100 == 0:
                 self.agent.model.model.save(model_path, overwrite=True)

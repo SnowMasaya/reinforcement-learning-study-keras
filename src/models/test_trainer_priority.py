@@ -16,6 +16,5 @@ class TestTrainerPriority(TestCase):
         mount_agent = Agent(actions=10, input_data_shape=(10,))
         print(len(env.fx_time_data_buy))
         trainer = Trainer_priority(env, agent, mount_agent,
-                                   Adam(lr=1e-6),
                                    data_end_index=len(env.fx_time_data_buy) - 2)
         trainer.train()

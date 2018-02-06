@@ -24,14 +24,14 @@ class Env(object):
 
     def __sell(self, mount: int=0):
         state_action = {}
-        if mount * self.fx_time_data_sell[self.state] > self.stock_balance:
+        if mount > self.stock_balance:
             state_action['fail'] = 0
             return state_action
         # print("sell {}".format(mount * self.fx_time_data_sell[self.state]))
         sell_price = mount * self.fx_time_data_sell[self.state]
-        self.stock_balance = self.stock_balance - sell_price
+        self.stock_balance = self.stock_balance - mount
         self.balance = self.balance + sell_price
-        profit = self.balance + self.stock_balance
+        profit = self.balance + self.stock_balance * self.fx_time_data_sell[self.state]
         self.state += 1
         state_action['success'] = profit
         return state_action
@@ -43,16 +43,16 @@ class Env(object):
             return state_action
         # print("buy {}".format(mount * self.fx_time_data_buy[self.state]))
         buy_price = mount * self.fx_time_data_buy[self.state]
-        self.stock_balance = self.stock_balance + buy_price
+        self.stock_balance = self.stock_balance + mount
         self.balance = self.balance - buy_price
-        profit = self.balance + self.stock_balance
+        profit = self.balance + self.stock_balance * self.fx_time_data_sell[self.state]
         self.state += 1
         state_action['success'] = profit
         return state_action
 
     def __stay(self):
         state_action = {}
-        profit = 0
+        profit = self.balance + self.stock_balance * self.fx_time_data_sell[self.state]
         self.state += 1
         state_action['success'] = profit
         return state_action

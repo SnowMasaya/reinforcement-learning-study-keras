@@ -153,8 +153,10 @@ class Trainer(object):
                 epsilon -= (initial_epsilon - final_epsilon) / epochs
 
             print(fmt.format(e + 1, epochs, loss, score, epsilon, is_training))
-            print("balance {}, stock_balance {} total_balance {}".
-                  format(self.env.balance, self.env.stock_balance, self.env.balance + self.env.stock_balance))
+            stock_value = self.env.fx_time_data_sell[self.env.state] * self.env.stock_balance
+            print("balance {}, stock_value {} total_balance {}".
+                  format(self.env.balance, stock_value,
+                         self.env.balance + stock_value))
 
             if e % 100 == 0:
                 self.agent.model.save(model_path, overwrite=True)
